@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from . import utils
-from .validators import validate_zip_code, validate_truck_uid
+from .validators import validate_truck_uid, validate_zip_code
 
 MIN_WEIGHT = settings.MIN_WEIGHT
 MAX_WEIGHT = settings.MAX_WEIGHT

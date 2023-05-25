@@ -1,9 +1,8 @@
-from rest_framework import viewsets
-from rest_framework import generics
-from django.db.models import Count, Case, When
+from rest_framework import generics, viewsets
+from django.db.models import Case, Count, When
 
 from . import serializers
-from loads.models import Truck, Load
+from loads.models import Load, Truck
 
 LOAD_SERIALIZERS = {
     'list': serializers.LoadListSerializer,
