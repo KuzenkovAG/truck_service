@@ -16,6 +16,22 @@ class TruckSerializer(serializers.ModelSerializer):
         read_only_fields = ('uid', 'capacity')
 
 
+class LoadUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for update Load."""
+    pick_up = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='zip',
+    )
+    delivery = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='zip',
+    )
+
+    class Meta:
+        model = Load
+        fields = ('id', 'pick_up', 'delivery', 'weight', 'description')
+
+
 class LoadBaseSerializer(serializers.ModelSerializer):
     """Base serializer for load."""
     pick_up = serializers.SlugRelatedField(
@@ -29,22 +45,14 @@ class LoadBaseSerializer(serializers.ModelSerializer):
 
 
 class LoadCreateSerializer(LoadBaseSerializer):
-    """Serializer for create view."""
+    """Serializer for create Load."""
     class Meta:
         model = Load
         fields = ('id', 'pick_up', 'delivery', 'weight', 'description')
-
-
-class LoadUpdateSerializer(LoadBaseSerializer):
-    """Serializer for update Loads.."""
-    class Meta:
-        model = Load
-        fields = ('id', 'pick_up', 'delivery', 'weight', 'description')
-        read_only_fields = ('weight', 'description')
 
 
 class LoadListSerializer(LoadBaseSerializer):
-    """Serializer for list view of Loads."""
+    """Serializer for list view of Load."""
     near_trucks = serializers.IntegerField()
 
     class Meta:
@@ -54,11 +62,6 @@ class LoadListSerializer(LoadBaseSerializer):
 
 class TruckDistanceSerializer(serializers.ModelSerializer):
     """Serializer for truck - distance."""
-    truck = serializers.SlugRelatedField(
-        slug_field='uid',
-        read_only=True
-    )
-
     class Meta:
         fields = ('truck', 'distance')
         model = LoadTruck

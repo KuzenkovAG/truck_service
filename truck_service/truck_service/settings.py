@@ -39,7 +39,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'track_service.urls'
+ROOT_URLCONF = 'truck_service.urls'
 
 TEMPLATES = [
     {
@@ -57,7 +57,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'track_service.wsgi.application'
+WSGI_APPLICATION = 'truck_service.wsgi.application'
 
 
 # Database
@@ -106,3 +106,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Constants of app
+TRUCKS = 20  # created quantity of trucks during build-up
+UID_START_INDEX = 1000  # starting index generated UID of truck
+MIN_WEIGHT = 1  # minimum weight of loads / truck capacity
+MAX_WEIGHT = 1000  # maximum weight of loads / truck capacity

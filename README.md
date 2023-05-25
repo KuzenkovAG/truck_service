@@ -68,10 +68,12 @@ GET: http://127.0.0.1:8000/api/v1/loads/{id}/
     "description": "text",
     "trucks": [
         {
+            "id": integer,
             "truck": "1199V",
             "distance": integer
         },
         {
+            "id": integer,
             "truck": "1198A",
             "distance": integer
         }

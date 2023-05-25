@@ -2,19 +2,22 @@ import random
 import string
 
 from geopy.distance import distance
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from loads import models
 
 
-LETTERS = string.ascii_uppercase
-TRUCKS = 200
-UID_START_INDEX = 1000
+_LETTERS = string.ascii_uppercase
+TRUCKS = settings.TRUCKS
+UID_START_INDEX = settings.UID_START_INDEX
+MIN_WEIGHT = settings.MIN_WEIGHT
+MAX_WEIGHT = settings.MAX_WEIGHT
 
 
 def _generate_uid(index):
     """Generate uid."""
-    rand_letter = random.choice(LETTERS)
+    rand_letter = random.choice(_LETTERS)
     return str(UID_START_INDEX + index) + rand_letter
 
 
@@ -40,15 +43,15 @@ class Command(BaseCommand):
     help = "Create several random trucks."
 
     def handle(self, *args, **options):
-
+        _LOCATIONS = models.Location.objects.last().id
         model = models.Truck
         object_model = model.objects.all()
         object_model.delete()
         trucks = [model(
                 id=i + 1,
                 uid=_generate_uid(i),
-                location_id=random.randint(1, 30000),
-                capacity=random.randint(1, 999),
+                location_id=random.randint(1, _LOCATIONS),
+                capacity=random.randint(MIN_WEIGHT, MAX_WEIGHT),
             ) for i in range(TRUCKS)
         ]
         created_objects = model.objects.bulk_create(trucks)

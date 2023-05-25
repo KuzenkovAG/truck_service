@@ -1,11 +1,12 @@
-from django.db import models
+from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 from . import utils
 from .validators import validate_zip_code
 
-MIN_WEIGHT = 1
-MAX_WEIGHT = 1000
+MIN_WEIGHT = settings.MIN_WEIGHT
+MAX_WEIGHT = settings.MAX_WEIGHT
 
 
 class Location(models.Model):
@@ -42,6 +43,7 @@ class LoadTruck(models.Model):
                 name='unique_load_truck'
             )
         ]
+        ordering = ('distance',)
 
 
 class Load(models.Model):
@@ -87,7 +89,7 @@ class Truck(models.Model):
     uid = models.CharField(max_length=16, unique=True)
     location = models.ForeignKey(
         'location',
-        on_delete=utils.set_location,
+        on_delete=models.CASCADE,
         related_name='truck',
         default=utils.set_location,
     )

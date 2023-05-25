@@ -25,10 +25,8 @@ class LoadViewSet(viewsets.ModelViewSet):
     queryset = Load.objects.all()
 
     def get_serializer_class(self):
-        serializer = LOAD_SERIALIZERS.get(self.action)
-        if not serializer:
-            return serializers.LoadRetrieveSerializer
-        return serializer
+        return LOAD_SERIALIZERS.get(
+            self.action, serializers.LoadRetrieveSerializer)
 
     def get_queryset(self):
         if self.action == 'list':
@@ -38,6 +36,4 @@ class LoadViewSet(viewsets.ModelViewSet):
                     then=1
                 )))
             )
-        elif self.action == 'retrieve':
-            return Load.objects.prefetch_related('trucks__truck').all()
         return Load.objects.all()
