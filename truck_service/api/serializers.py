@@ -62,6 +62,11 @@ class LoadListSerializer(LoadBaseSerializer):
 
 class TruckDistanceSerializer(serializers.ModelSerializer):
     """Serializer for truck - distance."""
+    truck = serializers.SlugRelatedField(
+        slug_field='uid',
+        read_only=True
+    )
+
     class Meta:
         fields = ('truck', 'distance')
         model = LoadTruck

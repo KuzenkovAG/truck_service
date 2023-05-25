@@ -36,4 +36,6 @@ class LoadViewSet(viewsets.ModelViewSet):
                     then=1
                 )))
             )
+        elif self.action == 'retrieve':
+            return Load.objects.prefetch_related('trucks__truck').all()
         return Load.objects.all()
