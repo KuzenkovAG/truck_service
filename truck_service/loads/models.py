@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from . import utils
-from .validators import validate_zip_code
+from .validators import validate_zip_code, validate_truck_uid
 
 MIN_WEIGHT = settings.MIN_WEIGHT
 MAX_WEIGHT = settings.MAX_WEIGHT
@@ -86,7 +86,11 @@ class Load(models.Model):
 
 class Truck(models.Model):
     """Trucks."""
-    uid = models.CharField(max_length=16, unique=True)
+    uid = models.CharField(
+        max_length=16,
+        unique=True,
+        validators=[validate_truck_uid]
+    )
     location = models.ForeignKey(
         'location',
         on_delete=models.CASCADE,
@@ -111,10 +115,11 @@ class Truck(models.Model):
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         new_obj = False
-        if self._is_location_changed() and self._is_new_object():
+        if self._is_new_object():
             new_obj = True
         else:
-            utils.update_distances_for_loads(self)
+            if self._is_location_changed():
+                utils.update_distances_for_loads(self)
         super().save(force_insert, force_update, *args, **kwargs)
         if new_obj:
             utils.create_load_trucks(truck=self)

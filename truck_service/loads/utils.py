@@ -25,15 +25,18 @@ def create_load_trucks(load=None, truck=None):
         ]
     else:
         loads = models.Load.objects.select_related('pick_up').all()
-        truck_loc = (truck.location.latitude, load.location.longitude)
-        obj = [models.LoadTruck(
-                load=load,
-                truck=truck,
-                distance=round(distance(truck_loc, (
-                    load.pick_up.latitude, load.pick_up.longitude
-                )).miles, 2)
-            ) for load in loads
-        ]
+        if loads:
+            truck_loc = (truck.location.latitude, load.location.longitude)
+            obj = [models.LoadTruck(
+                    load=load,
+                    truck=truck,
+                    distance=round(distance(truck_loc, (
+                        load.pick_up.latitude, load.pick_up.longitude
+                    )).miles, 2)
+                ) for i, load in enumerate(loads)
+            ]
+        else:
+            obj = None
     models.LoadTruck.objects.bulk_create(obj)
 
 

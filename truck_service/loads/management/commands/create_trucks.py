@@ -48,7 +48,6 @@ class Command(BaseCommand):
         object_model = model.objects.all()
         object_model.delete()
         trucks = [model(
-                id=i + 1,
                 uid=_generate_uid(i),
                 location_id=random.randint(1, _LOCATIONS),
                 capacity=random.randint(MIN_WEIGHT, MAX_WEIGHT),
